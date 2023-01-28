@@ -2,11 +2,14 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import { Link, useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import axios from 'axios';
+
 import toast from 'react-hot-toast';
 import { Helmet } from 'react-helmet';
 
 import { validateForm, IForm } from '../components/FormValidation';
 import ModalCustom from '../components/ModalCustom';
+import PixelABTest from '../components/PixelABTest';
 import Card from '../components/Card';
 import Xarrow from 'react-xarrows';
 
@@ -35,6 +38,11 @@ import Footer from '../components/Footer/Footer';
 const PageClientHub = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [dataBotMap, setDataBotMap] = useState<any[] | null>(null);
+
+	const [isQrCodeSyncing, setIsQrCodeSyncing] = useState(false); // syncinc image
+	const [isQrCodeLoading, setIsQrCodeLoading] = useState(false); // getting data
+	const [isQrCodeConnected, setIsQrCodeConnected] = useState(false); // data connected
+
 	// const [dataClient, setDataClient] = useState<any>(null);
 	const [fileToken, setFileToken] = useState<any>();
 	const [modalState, setModalState] = useState({
@@ -233,6 +241,32 @@ const PageClientHub = () => {
 	// 	});
 	// };
 
+	const handleWA = (number: any) => {
+		console.log('Added whatsapp');
+		setIsQrCodeLoading(true);
+		setIsQrCodeSyncing(true);
+		getData(number).then((response) => {
+			console.log('get data wa', response);
+		});
+	};
+
+	const getData = async (number: any) => {
+		let response = { data: '' };
+		await axios(`/login/${number}`).then((responseExp: any) => {
+			response = { ...response, data: responseExp };
+
+			if (Number(responseExp.data.status) === 3 || Number(responseExp.data.status) === 1) {
+				setIsQrCodeConnected(true);
+			} else {
+				setIsQrCodeConnected(false);
+			}
+
+			setIsQrCodeLoading(false);
+			setIsQrCodeSyncing(false);
+		});
+		return response;
+	};
+
 	// bot map
 	const loadingDataBotMap = async () => {
 		setDataBotMap(null);
@@ -428,6 +462,28 @@ const PageClientHub = () => {
 							<p className=" inline-block  text-gray-400">Dashboard</p>
 						</li>
 					</HeaderTopSecondary>
+
+					<PixelABTest
+						isQrCodeSyncing={isQrCodeSyncing}
+						isQrCodeConnected={isQrCodeConnected}
+						alias="ww1"
+					/>
+
+					{!isQrCodeConnected && isQrCodeLoading ? (
+						<>
+							<h2>Loading...</h2>
+						</>
+					) : (
+						<>
+							{/* <button onClick={() => setIsQrCodeSyncing(true)}>Start watch</button> */}
+							<button onClick={() => handleWA('ww1')} className="bg-blue-100">
+								Clicar 1: ww1
+							</button>
+							{/* <button onClick={() => setIsQrCodeSyncing(false)}>Stop watch</button> */}
+						</>
+					)}
+
+					{isQrCodeConnected ? <p>Test Connected</p> : <p>NOT connected</p>}
 
 					<div className="xl:container mx-auto my-2 md:my-5 px-2 md:px-5 3xl:px-0 ">
 						{/* <div className="my-2 lg:my-3">

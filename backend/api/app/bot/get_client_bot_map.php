@@ -88,7 +88,7 @@ if($isAuth && $userRole == 'CLIENT') {
             WHERE cli.cli_status = 1
             AND msg.msg_status = 1
             AND msg.cli_id = '{$clientId}'
-            ORDER BY msg.msg_answer_to, msg.msg_id  ") or die ("User Not Found");
+            ORDER BY msg.msg_answer_to, msg.msg_id") or die ("User Not Found");
 
             // 
             $level = 0;

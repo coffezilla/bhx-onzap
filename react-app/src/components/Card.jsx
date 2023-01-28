@@ -17,7 +17,11 @@ const Card = ({ className = '', item, handleClick, options }) => {
 			{options && (
 				<ul>
 					{options.map((answer, index) => {
-						return <li key={index}>{answer.id}</li>;
+						return (
+							<li key={index}>
+								{answer.keyText} - {answer.id}
+							</li>
+						);
 					})}
 				</ul>
 			)}
