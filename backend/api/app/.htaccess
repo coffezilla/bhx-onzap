@@ -36,6 +36,9 @@
     RewriteRule ^payments/tickets?$ /api/app/payments/get_client_payments.php [NC,L]
     RewriteRule ^clients/data-client-user?$ /api/app/clients/get_client_data_client.php [NC,L]
     RewriteRule ^payments/data-client-payment?$ /api/app/payments/get_client_data_payment.php [NC,L]
-
+    
+    # CLIENT
+    # get bot
+    RewriteRule ^bot/bot-map?$ /api/app/bot/get_client_bot_map.php [NC,L]
 
 </IfModule>

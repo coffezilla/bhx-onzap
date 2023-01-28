@@ -13,41 +13,54 @@ import { END_POINT_BASE } from '../Api/Api';
 
 interface IResPayments {
 	data: {
-		payments?: any;
+		botMap?: any;
 		message?: string;
 		status: number;
 	};
 }
 
-import { getPayments } from '../Api/paymentsClientHandle';
-import { getClientData } from '../Api/clientsClientHandle';
+// import { getPayments } from '../Api/paymentsClientHandle';
+import { getClientBotMap } from '../Api/botMapHandle';
+// import { getClientData } from '../Api/clientsClientHandle';
 import Footer from '../components/Footer/Footer';
 
 const PageClientHub = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
-	const [dataPayments, setDataPayments] = useState<any[] | null>(null);
-	const [dataClient, setDataClient] = useState<any>(null);
+	const [dataBotMap, setDataBotMap] = useState<any[] | null>(null);
+	// const [dataClient, setDataClient] = useState<any>(null);
 	const [fileToken, setFileToken] = useState<any>();
 
-	const loadingDataClient = async () => {
-		await getClientData().then((responseData: any) => {
-			if (responseData.data.status === 1) {
-				setDataClient(responseData.data.client);
-			} else {
-			}
-		});
-	};
+	// const loadingDataClient = async () => {
+	// 	await getClientData().then((responseData: any) => {
+	// 		if (responseData.data.status === 1) {
+	// 			setDataClient(responseData.data.client);
+	// 		} else {
+	// 		}
+	// 	});
+	// };
 
-	const loadingDataPayments = async () => {
-		setDataPayments(null);
-		await getPayments().then((responsePayments: IResPayments) => {
-			if (responsePayments.data.status === 1) {
-				setDataPayments(responsePayments.data.payments);
+	// bot map
+	const loadingDataBotMap = async () => {
+		setDataBotMap(null);
+		await getClientBotMap().then((responseBotMap: IResPayments) => {
+			if (responseBotMap.data.status === 1) {
+				setDataBotMap(responseBotMap.data.botMap);
 			} else {
 			}
 			setIsLoading(false);
 		});
 	};
+
+	// const loadingDataPayments = async () => {
+	// 	setDataPayments(null);
+	// 	await getPayments().then((responsePayments: IResPayments) => {
+	// 		if (responsePayments.data.status === 1) {
+	// 			setDataPayments(responsePayments.data.payments);
+	// 		} else {
+	// 		}
+	// 		setIsLoading(false);
+	// 	});
+	// };
 
 	useEffect(() => {
 		const localStorageAuth = getHasLocalStorageAuth();
@@ -56,13 +69,14 @@ const PageClientHub = () => {
 			email: localStorageAuth.data.email,
 			timestamp: localStorageAuth.data.timestamp,
 		});
-		loadingDataClient();
-		loadingDataPayments();
+		// loadingDataClient();
+		// loadingDataPayments();
+		loadingDataBotMap();
 	}, []);
 
-	if (dataClient === null) {
-		return <Placeholder />;
-	}
+	// if (dataClient === null) {
+	// 	return <Placeholder />;
+	// }
 
 	return (
 		<>
@@ -84,7 +98,7 @@ const PageClientHub = () => {
 					</HeaderTopSecondary>
 
 					<div className="xl:container mx-auto my-2 md:my-5 px-2 md:px-5 3xl:px-0 ">
-						<div className="my-2 lg:my-3">
+						{/* <div className="my-2 lg:my-3">
 							<h2 className="font-bold text-md md:text-lg mb-1 md:mb-3 my-1 md:my-5">
 								Área do cliente
 							</h2>
@@ -106,12 +120,14 @@ const PageClientHub = () => {
 									<span className="font-bold">Dia de vencimento:</span> {dataClient.due_day}
 								</li>
 							</ul>
-						</div>
+						</div> */}
 						<h2 className="font-bold text-md md:text-lg mb-1 md:mb-3 my-1 md:my-5">
 							Últimas cobranças
 						</h2>
 
-						{!isLoading && dataPayments !== null ? (
+						<pre>{JSON.stringify(dataBotMap, null, 1)}</pre>
+
+						{/* {!isLoading && dataPayments !== null ? (
 							dataPayments.length > 0 ? (
 								<div className="my-2 md:my-5 overflow-x-auto">
 									<table className="table-fixed sm:table-auto border-collapse border border-slate-400 w-full tr-even:bg-grey-100">
@@ -215,7 +231,7 @@ const PageClientHub = () => {
 							)
 						) : (
 							<Placeholder />
-						)}
+						)} */}
 						<p className="text-sm">
 							* Para registros antigos solicite conosco enviando uma mensagem pelo nosso{' '}
 							<a
