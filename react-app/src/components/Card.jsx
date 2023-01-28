@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 
 const Card = ({ className = '', item, handleClick, options }) => {
 	useEffect(() => {
-		console.log('done', options);
+		// console.log('done', options);
 	});
 
 	return (
@@ -16,19 +16,19 @@ const Card = ({ className = '', item, handleClick, options }) => {
 			<p>Landing Page {item.title}</p>
 			{options && (
 				<ul>
-					{options.map((answer) => {
-						return <li>{answer.id}</li>;
+					{options.map((answer, index) => {
+						return <li key={index}>{answer.id}</li>;
 					})}
 				</ul>
 			)}
 			<ul className="p-2 border">
 				<li>
 					<button className="border" onClick={() => handleClick(item.id)}>
-						Change red Text
+						Nova opção
 					</button>
 				</li>
 				<li>
-					<button className="border">Change blue Text</button>
+					<button className="border">Nova mensagem</button>
 				</li>
 			</ul>
 		</div>

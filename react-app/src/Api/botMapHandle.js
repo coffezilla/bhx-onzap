@@ -27,7 +27,7 @@ export const getClientBotMap = async () => {
 					serverResponse = {
 						data: {
 							status: response.data.status,
-							botMap: response.data.bot_map,
+							botmap: response.data.botmap,
 							message: response.data.message,
 						},
 					};
