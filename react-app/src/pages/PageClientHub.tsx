@@ -46,8 +46,8 @@ const PageClientHub = () => {
 
 	// qr code status
 	const [isQrCodeSyncing, setIsQrCodeSyncing] = useState(false); // syncinc image
-	const [isQrCodeLoading, setIsQrCodeLoading] = useState(false); // getting data
-	const [isQrCodeConnected, setIsQrCodeConnected] = useState(false); // data connected
+	const [isImageQrCodeLoading, setIsImageQrCodeLoading] = useState(false); // getting data
+	const [isQrCodeConnected, setIsQrCodeConnected] = useState<boolean | null>(null); // data connected
 
 	// const [dataClient, setDataClient] = useState<any>(null);
 	const [fileToken, setFileToken] = useState<any>();
@@ -250,7 +250,7 @@ const PageClientHub = () => {
 	//
 	const checkWALogin = (number: any) => {
 		console.log('checking whatsapp login');
-		setIsQrCodeLoading(true);
+		// setIsImageQrCodeLoading(true);
 		setIsQrCodeSyncing(true);
 		getWAStatus(number).then((response) => {
 			console.log('get data wa', response);
@@ -267,7 +267,8 @@ const PageClientHub = () => {
 				setIsQrCodeConnected(false);
 			}
 
-			setIsQrCodeLoading(false);
+			// setIsImageQrCodeLoading(false);
+			// setIsImageQrCodeLoading(false);
 			setIsQrCodeSyncing(false);
 		});
 		return response;
@@ -276,7 +277,7 @@ const PageClientHub = () => {
 	//
 	const handleWALogin = (number: any) => {
 		console.log('Added whatsapp');
-		setIsQrCodeLoading(true);
+		setIsImageQrCodeLoading(true);
 		setIsQrCodeSyncing(true);
 		getWAQrCode(number).then((response) => {
 			console.log('get data wa', response);
@@ -295,16 +296,16 @@ const PageClientHub = () => {
 				setIsQrCodeConnected(false);
 			}
 
-			setIsQrCodeLoading(false);
+			setIsImageQrCodeLoading(false);
 			setIsQrCodeSyncing(false);
 		});
 		return response;
 	};
 
 	// bot map
-	const loadingDataBotMap = async () => {
+	const loadingDataBotMap = () => {
 		setDataBotMap(null);
-		await getClientBotMap().then((responseBotMap: IResPayments) => {
+		getClientBotMap().then((responseBotMap: IResPayments) => {
 			console.log('neve', responseBotMap.data);
 			if (responseBotMap.data.status === 1) {
 				setDataBotMap(responseBotMap.data.botmap);
@@ -499,41 +500,29 @@ const PageClientHub = () => {
 						</li>
 					</HeaderTopSecondary>
 
-					{!isQrCodeConnected && isQrCodeLoading ? (
-						<>
-							<h2>Carregando...</h2>
-						</>
-					) : (
-						<>
-							{/* <button onClick={() => setIsQrCodeSyncing(true)}>Start watch</button> */}
-							<button onClick={() => handleWALogin(rdxEmail)} className="bg-blue-100">
-								Clicar 1: ww1
-							</button>
-							{/* <button onClick={() => setIsQrCodeSyncing(false)}>Stop watch</button> */}
-						</>
+					{isImageQrCodeLoading && (
+						<PixelABTest
+							isQrCodeSyncing={isQrCodeSyncing}
+							isQrCodeConnected={isQrCodeConnected}
+							alias={rdxEmail}
+						/>
 					)}
 
-					<PixelABTest
-						isQrCodeSyncing={isQrCodeSyncing}
-						isQrCodeConnected={isQrCodeConnected}
-						alias={rdxEmail}
-					/>
-
-					{!isQrCodeConnected && isQrCodeLoading ? (
-						<>
-							<h2>Loading...</h2>
-						</>
+					<pre>{JSON.stringify(isImageQrCodeLoading, null, 1)}</pre>
+					{isQrCodeConnected ? (
+						<p>connected</p>
+					) : isImageQrCodeLoading ? (
+						<p>connectando...</p>
 					) : (
-						<>
-							{/* <button onClick={() => setIsQrCodeSyncing(true)}>Start watch</button> */}
+						!isQrCodeConnected &&
+						!isQrCodeSyncing && (
 							<button onClick={() => handleWALogin(rdxEmail)} className="bg-blue-100">
-								Clicar 1: {rdxEmail}
+								Conectar: {rdxEmail}
 							</button>
-							{/* <button onClick={() => setIsQrCodeSyncing(false)}>Stop watch</button> */}
-						</>
+						)
 					)}
 
-					{isQrCodeConnected ? <p>Test Connected</p> : <p>NOT connected</p>}
+					{/* {isQrCodeConnected ? <p>Test Connected</p> : <p>NOT connected</p>} */}
 
 					<div className="xl:container mx-auto my-2 md:my-5 px-2 md:px-5 3xl:px-0 ">
 						{/* <div className="my-2 lg:my-3">
@@ -571,14 +560,13 @@ const PageClientHub = () => {
 									return (
 										<div
 											className="border border-gray-300 flex justify-center space-x-4 py-10"
-											key={index}
+											key={`level-${index}`}
 										>
 											{section.map((item: any) => {
 												return (
-													<>
+													<div key={`card-${item.id}`}>
 														<Card
 															item={item}
-															key={item.id}
 															handleClick={handleClick}
 															options={getCurrentItem(item.id)}
 														/>
@@ -592,7 +580,7 @@ const PageClientHub = () => {
 																strokeWidth={2}
 															/>
 														)}
-													</>
+													</div>
 												);
 											})}
 										</div>
