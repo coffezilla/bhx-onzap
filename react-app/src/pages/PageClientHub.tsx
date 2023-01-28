@@ -2,10 +2,13 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import { Link, useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 
 import toast from 'react-hot-toast';
 import { Helmet } from 'react-helmet';
+
+import { IRdxUser } from '../redux/ducks/User';
 
 import { validateForm, IForm } from '../components/FormValidation';
 import ModalCustom from '../components/ModalCustom';
@@ -36,9 +39,12 @@ import { addBotMessage, getClientBotMap } from '../Api/botMapHandle';
 import Footer from '../components/Footer/Footer';
 
 const PageClientHub = () => {
+	const rdxEmail = useSelector((store: IRdxUser) => store.email);
+	console.log(rdxEmail);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [dataBotMap, setDataBotMap] = useState<any[] | null>(null);
 
+	// qr code status
 	const [isQrCodeSyncing, setIsQrCodeSyncing] = useState(false); // syncinc image
 	const [isQrCodeLoading, setIsQrCodeLoading] = useState(false); // getting data
 	const [isQrCodeConnected, setIsQrCodeConnected] = useState(false); // data connected
@@ -241,16 +247,44 @@ const PageClientHub = () => {
 	// 	});
 	// };
 
-	const handleWA = (number: any) => {
+	//
+	const checkWALogin = (number: any) => {
+		console.log('checking whatsapp login');
+		setIsQrCodeLoading(true);
+		setIsQrCodeSyncing(true);
+		getWAStatus(number).then((response) => {
+			console.log('get data wa', response);
+		});
+	};
+	const getWAStatus = async (number: any) => {
+		let response = { data: '' };
+		await axios(`/check-login/${number}`).then((responseExp: any) => {
+			response = { ...response, data: responseExp };
+
+			if (Number(responseExp.data.status) === 3 || Number(responseExp.data.status) === 1) {
+				setIsQrCodeConnected(true);
+			} else {
+				setIsQrCodeConnected(false);
+			}
+
+			setIsQrCodeLoading(false);
+			setIsQrCodeSyncing(false);
+		});
+		return response;
+	};
+
+	//
+	const handleWALogin = (number: any) => {
 		console.log('Added whatsapp');
 		setIsQrCodeLoading(true);
 		setIsQrCodeSyncing(true);
-		getData(number).then((response) => {
+		getWAQrCode(number).then((response) => {
 			console.log('get data wa', response);
 		});
 	};
 
-	const getData = async (number: any) => {
+	//
+	const getWAQrCode = async (number: any) => {
 		let response = { data: '' };
 		await axios(`/login/${number}`).then((responseExp: any) => {
 			response = { ...response, data: responseExp };
@@ -346,6 +380,8 @@ const PageClientHub = () => {
 		// loadingDataClient();
 		// loadingDataPayments();
 		loadingDataBotMap();
+		console.log('man', rdxEmail);
+		checkWALogin(rdxEmail);
 	}, []);
 
 	// if (dataClient === null) {
@@ -463,10 +499,24 @@ const PageClientHub = () => {
 						</li>
 					</HeaderTopSecondary>
 
+					{!isQrCodeConnected && isQrCodeLoading ? (
+						<>
+							<h2>Carregando...</h2>
+						</>
+					) : (
+						<>
+							{/* <button onClick={() => setIsQrCodeSyncing(true)}>Start watch</button> */}
+							<button onClick={() => handleWALogin(rdxEmail)} className="bg-blue-100">
+								Clicar 1: ww1
+							</button>
+							{/* <button onClick={() => setIsQrCodeSyncing(false)}>Stop watch</button> */}
+						</>
+					)}
+
 					<PixelABTest
 						isQrCodeSyncing={isQrCodeSyncing}
 						isQrCodeConnected={isQrCodeConnected}
-						alias="ww1"
+						alias={rdxEmail}
 					/>
 
 					{!isQrCodeConnected && isQrCodeLoading ? (
@@ -476,8 +526,8 @@ const PageClientHub = () => {
 					) : (
 						<>
 							{/* <button onClick={() => setIsQrCodeSyncing(true)}>Start watch</button> */}
-							<button onClick={() => handleWA('ww1')} className="bg-blue-100">
-								Clicar 1: ww1
+							<button onClick={() => handleWALogin(rdxEmail)} className="bg-blue-100">
+								Clicar 1: {rdxEmail}
 							</button>
 							{/* <button onClick={() => setIsQrCodeSyncing(false)}>Stop watch</button> */}
 						</>
