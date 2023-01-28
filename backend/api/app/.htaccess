@@ -1,0 +1,41 @@
+#force www - https
+
+
+<IfModule mod_rewrite.c>
+   
+    RewriteEngine On
+    SetEnvIf Authorization .+ HTTP_AUTHORIZATION=$0
+
+    # RewriteRule ^auth/check-auth?$ /api/app/auth/check_auth.php [NC,L]
+    RewriteRule ^auth/login?$ /api/app/auth/login.php [NC,L]
+    RewriteRule ^auth/get-auth?$ /api/app/auth/get_auth.php [NC,L]
+
+    # clients
+    RewriteRule ^clients/clients?$ /api/app/clients/get_clients.php [NC,L]
+    RewriteRule ^clients/data-client?$ /api/app/clients/get_data_client.php [NC,L]
+
+    # payments
+    RewriteRule ^payments/payments?$ /api/app/payments/get_payments.php [NC,L]
+    RewriteRule ^payments/data-payment?$ /api/app/payments/get_data_payment.php [NC,L]
+    
+    RewriteRule ^payments/add-payments?$ /api/app/payments/post_add_payment.php [NC,L]
+    RewriteRule ^payments/edit-payment?$ /api/app/payments/patch_edit_payment.php [NC,L]
+    RewriteRule ^payments/remove-payment?$ /api/app/payments/delete_remove_payment.php [NC,L]
+
+
+    # files
+    RewriteRule ^files/files?$ /api/app/files/get_files.php [NC,L]
+    RewriteRule ^files/data-file?$ /api/app/files/get_data_file.php [NC,L]
+    
+    RewriteRule ^files/add-file?$ /api/app/files/post_add_file.php [NC,L]
+    RewriteRule ^files/remove-file?$ /api/app/files/delete_remove_file.php [NC,L]
+    RewriteRule ^files/boleto?$ /api/app/files/download.php [NC,L]
+    
+    # CLIENT
+    # get payment
+    RewriteRule ^payments/tickets?$ /api/app/payments/get_client_payments.php [NC,L]
+    RewriteRule ^clients/data-client-user?$ /api/app/clients/get_client_data_client.php [NC,L]
+    RewriteRule ^payments/data-client-payment?$ /api/app/payments/get_client_data_payment.php [NC,L]
+
+
+</IfModule>
