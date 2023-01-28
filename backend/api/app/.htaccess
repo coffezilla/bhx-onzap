@@ -40,5 +40,6 @@
     # CLIENT
     # get bot
     RewriteRule ^bot/bot-map?$ /api/app/bot/get_client_bot_map.php [NC,L]
+    RewriteRule ^bot/add-message?$ /api/app/bot/post_client_bot_message.php [NC,L]
 
 </IfModule>

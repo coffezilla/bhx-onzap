@@ -46,6 +46,54 @@ export const getClientBotMap = async () => {
 	return serverResponse;
 };
 
+// POST add
+export const addBotMessage = async (message, order, keyOption, answerTo) => {
+	const localStorageAuth = getHasLocalStorageAuth();
+	const hasLocalStorageAuth = localStorageAuth.status;
+	let serverResponse = { data: { status: 0 } };
+
+	if (hasLocalStorageAuth) {
+		const formData = new FormData();
+		formData.append('auth_timestamp', localStorageAuth.data.timestamp);
+		formData.append('auth_email', localStorageAuth.data.email);
+		formData.append('message', message);
+		formData.append('order', order);
+		formData.append('keyOption', keyOption);
+		formData.append('answerTo', answerTo);
+		formData.append('role', localStorageAuth.data.role);
+
+		const END_POINT = END_POINT_BASE + '/bot/add-message';
+		await axios({
+			method: 'post',
+			url: END_POINT,
+			data: formData,
+			headers: { Authorization: `Bearer ${localStorageAuth.data.token}` },
+		})
+			.then((response) => {
+				console.log('mx', response);
+				// 1 - done
+				if (response.data.status === 1) {
+					serverResponse = {
+						data: {
+							status: response.data.status,
+							message: response.data.message,
+						},
+					};
+				} else {
+					serverResponse = {
+						data: {
+							status: response.data.status,
+							message: response.data.message,
+						},
+					};
+				}
+			})
+			.catch((error) => {});
+	}
+
+	return serverResponse;
+};
+
 // // GET DATA
 // export const getPaymentClientData = async (paymentId) => {
 // 	const localStorageAuth = getHasLocalStorageAuth();

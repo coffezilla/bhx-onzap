@@ -12,8 +12,8 @@ const Card = ({ className = '', item, handleClick, options }) => {
 			className={`border z-10 relative border-gray-300 p-3 bg-white ${className}`}
 			id={`test-${item.id}`}
 		>
-			<h3>{item.id}Test AB</h3>
-			<p>Landing Page {item.title}</p>
+			<h3>{item.id}</h3>
+			<p>{item.title}</p>
 			{options && (
 				<ul>
 					{options.map((answer, index) => {
