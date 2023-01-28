@@ -4,6 +4,9 @@ import { Link, useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 
+import Card from '../components/Card';
+import Xarrow from 'react-xarrows';
+
 import { getHasLocalStorageAuth } from '../helpers/handleStorage';
 import Placeholder from '../components/Placeholder';
 import HeaderTop from '../components/HeaderTop/HeaderTop';
@@ -61,6 +64,40 @@ const PageClientHub = () => {
 	// 		setIsLoading(false);
 	// 	});
 	// };
+
+	//
+	const handleClick = (id: number) => {
+		const myLp = getLandingPageData(id);
+		console.log('clicked', myLp);
+	};
+
+	//
+	const getLandingPageOptions = (id: number) => {
+		let selected: any = [];
+		dataBotMap?.forEach((landingPage: any, level: any) => {
+			const findSelected = landingPage.filter((item: any) => item.answerTo === id);
+			// selected.push
+			if (findSelected.length > 0) {
+				selected.push(findSelected);
+				// selected = { ...findSelected };
+			}
+		});
+
+		return selected[0];
+	};
+
+	//
+	const getLandingPageData = (id: number) => {
+		let selected: any = [];
+		dataBotMap?.forEach((landingPage: any, level: any) => {
+			const findSelected = landingPage.filter((item: any) => item.id === id);
+			if (findSelected.length > 0) {
+				selected = { ...findSelected[0], level: level };
+			}
+		});
+
+		return selected;
+	};
 
 	useEffect(() => {
 		const localStorageAuth = getHasLocalStorageAuth();
@@ -126,6 +163,40 @@ const PageClientHub = () => {
 						</h2>
 
 						<pre>{JSON.stringify(dataBotMap, null, 1)}</pre>
+						<div className="border">
+							{dataBotMap &&
+								dataBotMap.map((section: any, index: any) => {
+									return (
+										<div
+											className="border border-gray-300 flex justify-center space-x-4 py-10"
+											key={index}
+										>
+											{section.map((item: any) => {
+												return (
+													<>
+														<Card
+															item={item}
+															key={item.id}
+															handleClick={handleClick}
+															options={getLandingPageOptions(item.id)}
+														/>
+														{item.answerTo !== 0 && (
+															<Xarrow
+																end={`test-${item.id}`}
+																start={`test-${item.answerTo}`}
+																zIndex={0}
+																startAnchor="bottom"
+																endAnchor="top"
+																strokeWidth={2}
+															/>
+														)}
+													</>
+												);
+											})}
+										</div>
+									);
+								})}
+						</div>
 
 						{/* {!isLoading && dataPayments !== null ? (
 							dataPayments.length > 0 ? (
