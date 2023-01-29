@@ -60,6 +60,7 @@ export const getAuth = async () => {
 			headers: { Authorization: `Bearer ${localStorageAuth.data.token}` },
 		})
 			.then((responseAuth) => {
+				console.log('cama', responseAuth);
 				if (responseAuth.data.status === 1) {
 					serverResponse = {
 						data: {
@@ -108,6 +109,7 @@ export const serverLoginUser = async (formLogin: IStForm['inputs'], role: any) =
 		url: ENDPOINT_LOGIN,
 		data: formData,
 	}).then((responseLogin) => {
+		console.log('maal', responseLogin);
 		if (responseLogin.data.status === 1) {
 			serverResponse = {
 				data: {

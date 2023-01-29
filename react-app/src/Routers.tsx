@@ -42,7 +42,7 @@ function Routers() {
 		if (!rdxUserisAuth) {
 			getAuth().then((responseAuth) => {
 				if (responseAuth.data.status === 1) {
-					dispatch(rdxLoginUser(responseAuth.data.role, responseAuth.data.email));
+					dispatch(rdxLoginUser(responseAuth.data.role, responseAuth.data.email, false));
 				} else {
 					clearLocalStorageAuth();
 					dispatch(rdxLogoutUser());

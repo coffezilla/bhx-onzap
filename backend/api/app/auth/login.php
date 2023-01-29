@@ -38,7 +38,6 @@ $token = createJWTAuth($userEmail, $currentTimestampClean, $JWTServerKeyCurrent)
 if($validInputs) {
     // query
     if($userRole == 'ADMIN') {
-    
         $queryUsers = mysqli_query($connection, "SELECT 
         usr_id
         FROM users
@@ -47,9 +46,7 @@ if($validInputs) {
         AND usr_password = '{$userPasswordMd5}'
         ORDER BY usr_id DESC
         LIMIT 1") or die ("User Not Found");
-
     } else {
-
         $queryUsers = mysqli_query($connection, "SELECT 
         cli_id
         FROM clients
@@ -58,19 +55,24 @@ if($validInputs) {
         AND cli_pswd = '{$userPasswordMd5}'
         ORDER BY cli_id DESC
         LIMIT 1") or die ("User Not Found");
-
     }
 
 
     if (mysqli_num_rows ($queryUsers) > 0) {
         $dataUser = mysqli_fetch_assoc($queryUsers);
-        $userId = $dataUser['usr_id'];
+
+        if($userRole == 'ADMIN') {
+            $userId = $dataUser['usr_id'];
+        } else {
+            $userId = $dataUser['cli_id'];
+        }
+        // $userId = $dataUser['usr_id'];
           
         $dataResponse['token'] = $token;
         $dataResponse['timestamp'] = $currentTimestamp;
 
         $dataResponse['user'] = array(
-            'id' => $dataUser['usr_id'],
+            'id' => $userId,
             'email' => $userEmail,
             'role' => $userRole,
         );

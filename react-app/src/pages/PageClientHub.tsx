@@ -40,6 +40,8 @@ import Footer from '../components/Footer/Footer';
 
 const PageClientHub = () => {
 	const rdxEmail = useSelector((store: IRdxUser) => store.email);
+	const rdxIsWALogged = useSelector((store: IRdxUser) => store.isWALogged);
+	const rdxAll = useSelector((store: IRdxUser) => store);
 	console.log(rdxEmail);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [dataBotMap, setDataBotMap] = useState<any[] | null>(null);
@@ -246,6 +248,34 @@ const PageClientHub = () => {
 	// 		}
 	// 	});
 	// };
+
+	//
+	const waLogout = (number: any) => {
+		console.log('checking whatsapp login');
+		// setIsImageQrCodeLoading(true);
+		// setIsQrCodeSyncing(true);
+		vagabunda(number).then((response) => {
+			console.log('get data wa', response);
+		});
+	};
+	const vagabunda = async (number: any) => {
+		let response = { data: '' };
+		await axios(`/logout/${number}`).then((responseExp: any) => {
+			console.log('contato', responseExp);
+			// response = { ...response, data: responseExp };
+
+			// if (Number(responseExp.data.status) === 3 || Number(responseExp.data.status) === 1) {
+			// 	setIsQrCodeConnected(true);
+			// } else {
+			// 	setIsQrCodeConnected(false);
+			// }
+
+			// setIsImageQrCodeLoading(false);
+			// setIsImageQrCodeLoading(false);
+			// setIsQrCodeSyncing(false);
+		});
+		return response;
+	};
 
 	//
 	const checkWALogin = (number: any) => {
@@ -509,6 +539,7 @@ const PageClientHub = () => {
 					)}
 
 					<pre>{JSON.stringify(isImageQrCodeLoading, null, 1)}</pre>
+					<pre className="text-sm">{JSON.stringify(rdxAll, null, 1)}</pre>
 					{isQrCodeConnected ? (
 						<p>connected</p>
 					) : isImageQrCodeLoading ? (
@@ -551,6 +582,10 @@ const PageClientHub = () => {
 						<h2 className="font-bold text-md md:text-lg mb-1 md:mb-3 my-1 md:my-5">
 							Últimas cobranças
 						</h2>
+
+						<button type="button" onClick={() => waLogout(rdxEmail)}>
+							DESLOGAR
+						</button>
 
 						<pre>{JSON.stringify(dataBotMap, null, 1)}</pre>
 

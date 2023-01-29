@@ -3,6 +3,7 @@ export interface IRdxUser {
 	isAuth: boolean;
 	role: any;
 	email: string;
+	isWALogged: boolean;
 }
 
 interface IActLogin {
@@ -10,6 +11,7 @@ interface IActLogin {
 	payload: {
 		role: any;
 		email: string;
+		isWALogged: boolean;
 	};
 }
 
@@ -25,12 +27,13 @@ const LOGOUT = 'LOGOUT';
 
 // ACTION
 // login
-export const rdxLoginUser = (role: any, email: any) => {
+export const rdxLoginUser = (role: any, email: any, isWALogged: false) => {
 	return {
 		type: LOGIN,
 		payload: {
 			role,
 			email,
+			isWALogged,
 		},
 	};
 };
@@ -47,6 +50,7 @@ const INITIAL_STATE: IRdxUser = {
 	isAuth: false,
 	role: 'NONE',
 	email: '',
+	isWALogged: false,
 };
 const User = (state = INITIAL_STATE, action: Action) => {
 	switch (action.type) {

@@ -72,7 +72,9 @@ const PageLogin = () => {
 			// use async function for server validation
 			serverLoginUser(formFields, 'ADMIN').then((responseServerLogin: any) => {
 				if (responseServerLogin.data.status === 1) {
-					dispatch(rdxLoginUser(responseServerLogin.data.role, responseServerLogin.data.email));
+					dispatch(
+						rdxLoginUser(responseServerLogin.data.role, responseServerLogin.data.email, false),
+					);
 					if (responseServerLogin.data.role === 'ADMIN') {
 						history.push('/hub');
 					}
