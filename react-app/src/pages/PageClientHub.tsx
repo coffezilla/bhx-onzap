@@ -412,7 +412,8 @@ const PageClientHub = () => {
 		// loadingDataPayments();
 		loadingDataBotMap();
 		console.log('man', rdxEmail);
-		checkWALogin(rdxEmail);
+		// checkWALogin(rdxEmail);
+		getWAQrCode(rdxEmail);
 	}, []);
 
 	// if (dataClient === null) {
