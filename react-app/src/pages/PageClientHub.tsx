@@ -524,12 +524,12 @@ const PageClientHub = () => {
 							<Placeholder title="Registrando..." />
 						)}
 					</ModalCustom>
-					<HeaderTop />
-					<HeaderTopSecondary>
+					{/* <HeaderTop /> */}
+					{/* <HeaderTopSecondary>
 						<li className="text-sm ">
 							<p className=" inline-block  text-gray-400">Dashboard</p>
 						</li>
-					</HeaderTopSecondary>
+					</HeaderTopSecondary> */}
 
 					{isImageQrCodeLoading && (
 						<PixelABTest
@@ -588,7 +588,7 @@ const PageClientHub = () => {
 							DESLOGAR
 						</button>
 
-						<pre>{JSON.stringify(dataBotMap, null, 1)}</pre>
+						{/* <pre>{JSON.stringify(dataBotMap, null, 1)}</pre> */}
 
 						<div className="border">
 							{dataBotMap &&
@@ -729,21 +729,10 @@ const PageClientHub = () => {
 						) : (
 							<Placeholder />
 						)} */}
-						<p className="text-sm">
-							* Para registros antigos solicite conosco enviando uma mensagem pelo nosso{' '}
-							<a
-								href="https://www.bhxsites.com.br/contato"
-								target="_blank"
-								className="text-blue-400 hover:underline"
-							>
-								Formulário de contato
-							</a>
-							.
-						</p>
 					</div>
 				</div>
 
-				<Footer />
+				{/* <Footer /> */}
 
 				{/* <pre className="text-xs">{JSON.stringify(dataClient, null, 1)}</pre> */}
 				{/* <pre className="text-xs">{JSON.stringify(dataPayments, null, 1)}</pre> */}

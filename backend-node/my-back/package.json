@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-validator": "^6.14.3",
+    "http": "^0.0.1-security",
+    "venom-bot": "^4.3.7"
+  }
+}
