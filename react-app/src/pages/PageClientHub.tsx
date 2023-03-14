@@ -316,6 +316,7 @@ const PageClientHub = () => {
 
 	//
 	const getWAQrCode = async (number: any) => {
+		console.log('queimando');
 		let response = { data: '' };
 		await axios(`/login/${number}`).then((responseExp: any) => {
 			response = { ...response, data: responseExp };
@@ -412,8 +413,8 @@ const PageClientHub = () => {
 		// loadingDataPayments();
 		loadingDataBotMap();
 		console.log('man', rdxEmail);
-		// checkWALogin(rdxEmail);
-		getWAQrCode(rdxEmail);
+		checkWALogin(rdxEmail);
+		// getWAQrCode(rdxEmail);
 	}, []);
 
 	// if (dataClient === null) {
@@ -524,7 +525,7 @@ const PageClientHub = () => {
 							<Placeholder title="Registrando..." />
 						)}
 					</ModalCustom>
-					{/* <HeaderTop /> */}
+					<HeaderTop />
 					{/* <HeaderTopSecondary>
 						<li className="text-sm ">
 							<p className=" inline-block  text-gray-400">Dashboard</p>

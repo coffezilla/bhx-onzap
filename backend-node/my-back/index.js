@@ -18,14 +18,11 @@ app.use(express.static('public'));
 const fs = require('fs');
 // const venom = require('venom-bot');
 
-const loggedOnes = [];
+let loggedOnes = [];
 
-const loggedWa = [
-	{
-		sessionName: 'primeiro',
-		client: null,
-	},
-];
+// const loggedWa = [
+	
+// ];
 
 const data = [
 	[
@@ -169,12 +166,12 @@ app.get('/', (req, res) => {
 
 // login wa
 app.get('/check-login/:wa', (req, res) => {
-	console.log('foo', loggedOnes);
-	console.log('foo2', loggedWa);
+	console.log('fboo', loggedOnes);
+	// console.log('fboo2', loggedWa);
 	const currentWA = req.params.wa;
 
 	const isAlreadyLogged = getCurrentItem(currentWA);
-	console.log('Man', isAlreadyLogged);
+	// console.log('Man', isAlreadyLogged);
 
 	// console.log("sss", req.params.wa)
 	if (isAlreadyLogged) {
@@ -185,88 +182,95 @@ app.get('/check-login/:wa', (req, res) => {
 	}
 });
 
-const currentWA = 'devrenato.js@gmail.com';
+// const currentWA = 'devrenato.js@gmail.com';
 
-venom
-	.create({
-		session: currentWA, // name of session
-		statusFind: (statusSession, session) => {
-			console.log('Status Session: ', statusSession); //return isLogged || notLogged || browserClose || qrReadSuccess || qrReadFail || autocloseCalled || desconnectedMobile || deleteToken || chatsAvailable || deviceNotConnected || serverWssNotConnected || noOpenBrowser || initBrowser || openBrowser || connectBrowserWs || initWhatsapp || erroPageWhatsapp || successPageWhatsapp || waitForLogin || waitChat || successChat
-			//Create session wss return "serverClose" case server for close
-			console.log('Session name: ', session);
-		},
-		options: {
-			headless: false,
-		},
-		catchQR: (base64Qr, asciiQR, attempts, urlCode) => {
-			// console.log('Number of attempts to read the qrcode: ', attempts);
-			// console.log('Terminal qrcode: ', asciiQR);
-			// console.log('base64 image string qrcode: ', base64Qrimg);
-			// console.log('urlCode (data-ref): ', urlCode);
-			// console.log(asciiQR); // Optional to log the QR in the terminal
-			var matches = base64Qr.match(/^data:([A-Za-z-+\\/]+);base64,(.+)$/),
-				response = {};
-			if (matches.length !== 3) {
-				return new Error('Invalid input string');
-			}
-			response.type = matches[1];
-			response.data = new Buffer.from(matches[2], 'base64');
-			var imageBuffer = response;
-			require('fs').writeFile(
-				`./public/${currentWA}.png`,
-				imageBuffer['data'],
-				'binary',
-				function (err) {
-					if (err != null) {
-						console.log(err);
-					}
-				}
-			);
-		},
+// venom
+// 	.create({
+// 		session: currentWA, // name of session
+// 		statusFind: (statusSession, session) => {
+// 			console.log('Status Session: ', statusSession); //return isLogged || notLogged || browserClose || qrReadSuccess || qrReadFail || autocloseCalled || desconnectedMobile || deleteToken || chatsAvailable || deviceNotConnected || serverWssNotConnected || noOpenBrowser || initBrowser || openBrowser || connectBrowserWs || initWhatsapp || erroPageWhatsapp || successPageWhatsapp || waitForLogin || waitChat || successChat
+// 			//Create session wss return "serverClose" case server for close
+// 			console.log('Session name: ', session);
+// 		},
+// 		options: {
+// 			headless: false,
+// 		},
+// 		catchQR: (base64Qr, asciiQR, attempts, urlCode) => {
+// 			// console.log('Number of attempts to read the qrcode: ', attempts);
+// 			// console.log('Terminal qrcode: ', asciiQR);
+// 			// console.log('base64 image string qrcode: ', base64Qrimg);
+// 			// console.log('urlCode (data-ref): ', urlCode);
+// 			// console.log(asciiQR); // Optional to log the QR in the terminal
+// 			var matches = base64Qr.match(/^data:([A-Za-z-+\\/]+);base64,(.+)$/),
+// 				response = {};
+// 			if (matches.length !== 3) {
+// 				return new Error('Invalid input string');
+// 			}
+// 			response.type = matches[1];
+// 			response.data = new Buffer.from(matches[2], 'base64');
+// 			var imageBuffer = response;
+// 			require('fs').writeFile(
+// 				`./public/${currentWA}.png`,
+// 				imageBuffer['data'],
+// 				'binary',
+// 				function (err) {
+// 					if (err != null) {
+// 						console.log(err);
+// 					}
+// 				}
+// 			);
+// 		},
 
-		BrowserInstance: (browser, waPage) => {
-			console.log('Browser PID:', browser.process().pid);
-			waPage.screenshot({ path: 'screenshot.png' });
-		},
-		// useChrome: false,
-		// logQR: false,
-		statusFind: (statusSession, session) => {
-			console.log('tudo', statusSession);
-		},
-		multidevice: true, // for version not multidevice use false.(default: true)
-	})
-	.then((client) => {
-		// setClient(client);
-		start(client);
-		// checkUser(client);
-		console.log('feito');
-		loggedOnes.push(currentWA);
-		client.onStateChange((state) => {
-			console.log('changeddddd', state);
-		});
+// 		BrowserInstance: (browser, waPage) => {
+// 			console.log('Browser PID:', browser.process().pid);
+// 			waPage.screenshot({ path: 'screenshot.png' });
+// 		},
+// 		// useChrome: false,
+// 		// logQR: false,
+// 		statusFind: (statusSession, session) => {
+// 			console.log('tudo', statusSession);
+// 		},
+// 		multidevice: true, // for version not multidevice use false.(default: true)
+// 	})
+// 	.then((client) => {
+// 		// setClient(client);
+// 		start(client);
+// 		// checkUser(client);
+// 		console.log('feito');
+// 		loggedOnes.push(currentWA);
+// 		// client.onStateChange((state) => {
+// 		// 	console.log('changeddddd', state);
+// 		// });
+// 		client.onStateChange((state) => {
+// 			console.log('State changed: ', state);
+// 			// force whatsapp take over
+// 			if ('CONFLICT'.includes(state)) client.useHere();
+// 			// detect disconnect on whatsapp
+// 			if ('UNPAIRED'.includes(state)) console.log('logout');
+// 		});
 
-		loggedWa.push({ sessionName: currentWA, client: client });
-		fs.unlink(`./public/${currentWA}.png`, () => {
-			console.log('deleted');
-		});
+// 		loggedWa.push({ sessionName: currentWA, client: client });
+// 		fs.unlink(`./public/${currentWA}.png`, () => {
+// 			console.log('deleted');
+// 		});
 
-		// res.json({ status: 1, message: 'foo' });
-	})
-	.catch((erro) => {
-		console.log(erro);
-		// res.json({ status: 2, message: 'error' });
-	});
+// 		// res.json({ status: 1, message: 'foo' });
+// 	})
+// 	.catch((erro) => {
+// 		console.log(erro);
+// 		// res.json({ status: 2, message: 'error' });
+// 	});
 
 // login wa
 app.get('/login/:wa', (req, res) => {
 	console.log('foo', loggedOnes);
-	console.log('foo2', loggedWa);
+	// console.log('foo2', loggedWa);
 
 	// console.log("sss", req.params.wa)
 	const currentWA = req.params.wa;
 
 	const isAlreadyLogged = getCurrentItem(currentWA);
-	console.log('Man', isAlreadyLogged);
+	// console.log('Man', isAlreadyLogged);
 
 	// console.log("sss", req.params.wa)
 	if (isAlreadyLogged) {
@@ -276,6 +280,9 @@ app.get('/login/:wa', (req, res) => {
 		venom
 			.create({
 				session: currentWA, // name of session
+				// options: {
+				// 	headless: false,
+				// },				
 				catchQR: (base64Qr, asciiQR, attempts, urlCode) => {
 					// console.log('Number of attempts to read the qrcode: ', attempts);
 					// console.log('Terminal qrcode: ', asciiQR);
@@ -302,10 +309,10 @@ app.get('/login/:wa', (req, res) => {
 					);
 				},
 
-				BrowserInstance: (browser, waPage) => {
-					console.log('Browser PID:', browser.process().pid);
-					waPage.screenshot({ path: 'screenshot.png' });
-				},
+				// BrowserInstance: (browser, waPage) => {
+				// 	// console.log('Browser PID:', browser.process().pid);
+				// 	waPage.screenshot({ path: 'screenshot.png' });
+				// },
 				// useChrome: false,
 				// logQR: false,
 				statusFind: (statusSession, session) => {
@@ -317,16 +324,79 @@ app.get('/login/:wa', (req, res) => {
 				// setClient(client);
 				start(client);
 				// checkUser(client);
-				console.log('feito');
+				// console.log('feito');
 				loggedOnes.push(currentWA);
 				client.onStateChange((state) => {
-					console.log('changeddddd', state);
+					console.log('changeddddd');
 				});
 
-				loggedWa.push({ sessionName: currentWA, client: client });
+				// const browserSessionToken = client.getSessionTokenBrowser(true);
+				// client.getSessionTokenBrowser(true)
+				// .then(response => {
+				// 	console.log("docu", response)
+				// })
+
+
+				// loggedWa.push({ sessionName: currentWA, client: client });
 				fs.unlink(`./public/${currentWA}.png`, () => {
 					console.log('deleted');
 				});
+
+
+				// let time = 0;
+				client.onStreamChange((state) => {
+				  console.log('State Connection Stream: ' + state);
+
+
+				  if (state === 'LOGOUT') {
+
+				  		deleteCurrentItem(currentWA)
+
+
+				  		// client.logout();
+				  		// client.useHere();
+
+					    setTimeout(() => {
+					      
+						
+						// directory path
+						const dir = `./tokens/${currentWA}`;
+
+						fs.rm(dir, { recursive: true, force: true }, err => {
+						  if (err) {
+						    throw err
+						  }
+
+						  console.log(`${dir} is deleted!`)
+						})
+
+
+						// // delete directory recursively
+						// try {
+						//   fs.rmdirSync(dir, { recursive: true })
+
+						//   console.log(`${dir} is deleted!`)
+						// } catch (err) {
+						//   console.error(`Error while deleting ${dir}.`)
+						// }					      
+
+						client.close();
+
+
+							// fs.unlink(`./tokens/${currentWA}`, () => {
+							// 	console.log('deleted token');
+							// });					      
+					      // console.log("fechado browser", browserSessionToken)
+					      // deleteToken(browserSessionToken)
+
+
+					    }, 8000);
+					}
+				  // if (state === 'DISCONNECTED' || state === 'SYNCING') {
+				  // }
+				  // clearTimeout(time);
+				});
+
 
 				// res.json({ status: 1, message: 'foo' });
 			})
@@ -392,6 +462,7 @@ function start(client) {
 				});
 		}
 	});
+
 
 	// client.onMessage((message) => {
 	// 	if (message.body === 'Hum' && message.isGroupMsg === false) {
@@ -473,11 +544,11 @@ function offlineWa() {
 
 // get single item
 const getCurrentItem = (sessionName) => {
-	console.log('x');
+	console.log('x', loggedOnes);
 	let selected = [];
 	// loggedWa.forEach((sessionOpened) => {
-	const findSelected = loggedWa.filter(
-		(item) => item.sessionName === sessionName
+	const findSelected = loggedOnes.filter(
+		(item) => item === sessionName
 	);
 	// selected.push
 	if (findSelected.length > 0) {
@@ -488,6 +559,47 @@ const getCurrentItem = (sessionName) => {
 	// });
 
 	return selected[0];
+};
+
+
+// let mano = [1,2,3,4]
+
+// console.log("livro", mano)
+
+// mano = mano.filter(item => item !== 2)
+// console.log("livro", mano)
+
+
+
+// delete item
+const deleteCurrentItem = (sessionName) => {
+
+	loggedOnes = loggedOnes.filter(item => item !== sessionName)
+
+
+	// console.log('x', loggedOnes);
+	// let selected = [];
+	// // loggedWa.forEach((sessionOpened) => {
+	// const findSelected = loggedOnes.filter(
+	// 	(item) => item !== sessionName
+	// );
+	// selected.push
+	// if (findSelected.length > 0) {
+	// 	selected = findSelected;
+	// 	// selected = { ...findSelected };
+	// }	// loggedOnes = [...findSelected];
+	// console.log('x', loggedOnes);
+
+
+
+
+console.log("deslogado", loggedOnes)
+
+
+	// console.log('b');
+	// });
+
+	// return selected[0];
 };
 
 // app.get('*', function (req, res) {
